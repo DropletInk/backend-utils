@@ -1,0 +1,30 @@
+{
+    "name": "backend-utils",
+    "version": "1.0.0",
+    "description": "Commonly used backend utilities",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "build": "tsc",
+        "prepublishOnly": "npm run build"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/DropletInk/backend-utils.git"
+    },
+    "keywords": [
+        "typescript",
+        "library"
+    ],
+    "author": "Sayandip Dutta",
+    "license": "ISC",
+    "type": "commonjs",
+    "bugs": {
+        "url": "https://github.com/DropletInk/backend-utils/issues"
+    },
+    "homepage": "https://github.com/DropletInk/backend-utils#readme",
+    "devDependencies": {
+        "@types/node": "^25.0.3",
+        "typescript": "^5.9.3"
+    }
+}
