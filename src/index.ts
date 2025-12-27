@@ -137,3 +137,58 @@ export const PollingPresets = {
         retryLimit: 60,
     }),
 };
+
+
+interface AnyFunction {
+    (...args: any[]): any;
+}
+
+type MemoizeParams<F extends AnyFunction> = {
+    fn: F;
+    ttl: number;
+};
+
+/**
+* This function memoizes the result of a given function for a specified TTL (time-to-live).
+* @param params - An object containing the function to memoize and the TTL in milliseconds.
+* @returns A new function that returns the cached result if called within the TTL, otherwise calls the original function and updates the cache.
+*
+* @example
+* ```typescript
+*  const memoizedFn = memoizeWithTTL({
+*      fn: () => fetchDataFromAPI(),
+*      ttl: 60000, // Cache result for 60 seconds
+*  });
+*  const result1 = memoizedFn(); // Calls fetchDataFromAPI()
+*  const result2 = memoizedFn(); // Returns cached result if within 60 seconds
+*  ```
+* @example
+* ```typescript
+*  // Memoizing a function with no expiration
+*  const memoizedSum = memoizeWithTTL({
+*    fn: (a: number, b: number) => a + b,
+*    ttl: Infinity, // Cache result indefinitely
+*  });
+*  const result1 = memoizedSum(2, 3); // Computes 5
+*  const result2 = memoizedSum(2, 3); // Returns cached 5
+*  ```
+*  */
+export function memoizeWithTTL<F extends AnyFunction>({
+    fn,
+    ttl,
+}: MemoizeParams<F>): F {
+    let cache: { value: ReturnType<F>; expiry: number } | null = null;
+    return (function(...args: any[]) {
+        const now = Date.now();
+        if (cache && now < cache.expiry) {
+            return cache.value;
+        }
+        const result = fn(...args);
+        cache = { value: result, expiry: now + ttl };
+        return result;
+    }) as F;
+};
+
+export function memoize<F extends AnyFunction>(params: Omit<MemoizeParams<F>, 'ttl'>): F {
+    return memoizeWithTTL<F>({ ...params, ttl: Infinity });
+}
