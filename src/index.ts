@@ -21,7 +21,7 @@ export type PollingResult<T> =
 /**
  * Polls an async function until a condition is met or timeout/retry limits are reached
  *
- * @param params - The polling parameters
+ * @param {PollingParams<T>} params - The polling parameters
  * @returns A promise that resolves to either a successful result or an error with attempt count
  *
  * @example
@@ -150,7 +150,7 @@ type MemoizeParams<F extends AnyFunction> = {
 
 /**
 * This function memoizes the result of a given function for a specified TTL (time-to-live).
-* @param params - An object containing the function to memoize and the TTL in milliseconds.
+* @param {MemoizeParams<F>} params - An object containing the function to memoize and the TTL in milliseconds.
 * @returns A new function that returns the cached result if called within the TTL, otherwise calls the original function and updates the cache.
 *
 * @example
