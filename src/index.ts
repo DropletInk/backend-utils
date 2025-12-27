@@ -61,9 +61,7 @@ export async function poll<T>({
 
     while (attempts < retryLimit) {
         if (Date.now() - startTime >= timeout) {
-            if (lastError && retryOnError) {
-                return { error: lastError, attempts };
-            }
+            if (lastError && retryOnError) return { error: lastError, attempts };
             return { result: lastResult, attempts };
         }
 
@@ -75,29 +73,22 @@ export async function poll<T>({
             lastError = null;
 
             if (stopCondition) {
-                if (stopCondition(result)) {
-                    return { result, attempts };
-                }
+                if (stopCondition(result)) return { result, attempts };
             } else {
                 return { result, attempts };
             }
         } catch (error) {
             lastError = error instanceof Error ? error : new Error(String(error));
-            if (!retryOnError) {
-                return { error: lastError, attempts };
-            }
+            if (!retryOnError) return { error: lastError, attempts };
         }
 
         if (Date.now() - startTime >= timeout) {
-            if (lastError && retryOnError) {
-                return { error: lastError, attempts };
-            }
+            if (lastError && retryOnError) return { error: lastError, attempts };
             return { result: lastResult, attempts };
         }
 
         if (attempts < retryLimit) {
             await new Promise(resolve => setTimeout(resolve, currentInterval));
-
             currentInterval = Math.floor(currentInterval * backoffFactor);
         }
     }
