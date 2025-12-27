@@ -49,7 +49,7 @@ export async function poll<T>({
         interval,
         timeout,
         backoffFactor = 1,
-        retryLimit = Infinity,
+        retryLimit = 1,
     } = options;
 
     const retryOnError = stopCondition === undefined;
