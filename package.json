@@ -18,7 +18,7 @@
     ],
     "author": "Sayandip Dutta",
     "license": "ISC",
-    "type": "commonjs",
+    "type": "module",
     "bugs": {
         "url": "https://github.com/DropletInk/backend-utils/issues"
     },
